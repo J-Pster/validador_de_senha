@@ -1,70 +1,137 @@
-# Getting Started with Create React App
+# Seja bem vindo a um dos meus #JokeCodes
+Nesse código vou te mostrar como fazer uma validação de senha no Front-End, **com feedback na tela de login!**, usando React e mais nadinha!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**OBS: Nesse repositório também tem um Workflow para fazer auto-deploy de aplicações React**
 
-## Available Scripts
+![Login Gif](./LoginGif.gif)
 
-In the project directory, you can run:
+## Como usar esse repositório?
+Basta clonar o repositório para o seu computador, abrir a pasta, rodar `npm install` e depois rodar `npm start` para abrir o projeto no seu `localhost:xxxx`, e prontinho!
 
-### `npm start`
+## Como isso foi feito?
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### JSX
+A primeira coisa é criar os elementos da tela, para esse login eu criei um título, dois campos, um de email e um de senha, e uma lista para armazenar os textos com o que a senha precisa ter pra ser válida.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+    <div className='App'>
+      <div className='Login'>
+        <h3>Faça Login</h3>
+        <div className='Login__inputs'>
+          <input type={'email'} placeholder="Seu Email"></input>
+          <div className='Password'>
+            <input value={passValue} onChange={({target}) => {setPassValue(target.value)}} type={view ? 'text' : 'password'} placeholder="Sua Senha"></input>
+            {view ? <AiFillEye className='icon' onClick={() => setView(!view)}/> : <AiFillEyeInvisible className='icon' onClick={() => setView(!view)}/>}
+          </div>
 
-### `npm test`
+          <ul className='Inputs__checks'>
+            <li className={validated.length ? 'true' : 'false'}>Ter mais de 8 caracteres</li>
+            <li className={validated.upper ? 'true' : 'false'}>Ter uma letra maiúscula</li>
+            <li className={validated.lower ? 'true' : 'false'}>Ter uma letra minúscula</li>
+            <li className={validated.special ? 'true' : 'false'}>Ter um caractere especial (%,&,*)</li>
+            <li className={validated.number ? 'true' : 'false'}>Ter pelo menos um número</li>
+          </ul>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+          <button type={'button'} className='Inputs__button'>Enviar</button>
+        </div>
+      </div>
+    </div>
+```
 
-### `npm run build`
+Uma coisa interessante para aprender aqui é o botão de **Mostrar/Ocultar** a senha, eu fiz isso criado um state chamado **view**, quando esse state está `true` eu exibo o icone de um olho normal, e altero o campo de senha para o tipo `text`, e quando o state está `false` o campo de senha volta para o tipo `password` e o icone de um olho cortado aparece.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+          <div className='Password'>
+            <input value={passValue} onChange={({target}) => {setPassValue(target.value)}} type={view ? 'text' : 'password'} placeholder="Sua Senha"></input>
+            {view ? <AiFillEye className='icon' onClick={() => setView(!view)}/> : <AiFillEyeInvisible className='icon' onClick={() => setView(!view)}/>}
+          </div>
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### SCSS
+Para esse projeto eu usei o **SCSS**, que me permite aninhar as classes assim como aninhamos componentes no JSX.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Javascript, finalmente!
+Aqui que vem a magia, a primeira coisa para fazer essa validação é criar as validações, para isso, eu vou usar **RegEx**, da uma olhada:
+```
+const validations = {
+  lower: new RegExp('(?=.*[a-z])'),
+  upper: new RegExp('(?=.*[A-Z])'),
+  number: new RegExp('(?=.*[0-9])'),
+  special: new RegExp('(?=.*[!@#\$%\^&\*])'),
+  length: new RegExp('(?=.{8,})')
+}
+```
 
-### `npm run eject`
+Depois que eu criei um **Objeto que armazena os RegEx de validação** eu vou criar um Objeto que armazena **se o resultado foi true ou falso** de acordo com cada validação.
+```
+  const [validated, setValidated] = useState({
+    lower: false,
+    upper: false,
+    number: false,
+    special: false,
+    length: false
+  })
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### Agora vem a magia!
+Usando o **useEffect** com `passValue` que é meu state que armazena o vlaor do input da senha como **dependência do useEffect**, eu vou fazer a validação da seguinte forma:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Antes de tudo, eu vou pegar o meu objeto que armazena se o resultado foi true ou falso, e vou criar uma cópia dele dentro do meu **useEffect**, para que eu possa alterar os valores direto no objeto sem usar a função de `set` do `useState`:
+```
+useEffect(() => {
+    const tempValidated = validated;
+    
+    //...
+    }, [passValue])
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Primeiro, eu vou fazer um **Map** no Object.entries do meu objeto de validações:
+```
+Object.entries(validations).map((obj) => {
+    // ...
+})
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Segundo, eu separo a key do valor RegEx:
+```
+Object.entries(validations).map((obj) => {
+    // key vai ser por exemplo number
+    const key = obj[0]
+    // val vai ser por exemplo o RegEx de number que é /(?=.*[0-9])/
+    const val = obj[1]
+  
+  // ...
+})
+```
 
-## Learn More
+**Terceiro, e último, eu faço os testes!**
+Para cada validação do objeto de validações, eu vou fazer um `val.test(passValue)` para verificar se a senha passa naquele **RegEx**:
+```
+      if(val.test(passValue)) {
+        tempValidated[key] = true;
+      } else {
+        tempValidated[key] = false;
+      }
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### E é assim que se faz!
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Agora para finalizar, eu seto o meu objeto que salva os true e false das validações que está no **useState**, e o código fica assim:
+```
+  useEffect(() => {
+    const tempValidated = validated;
 
-### Code Splitting
+    Object.entries(validations).map((obj) => {
+      const key = obj[0]
+      const val = obj[1]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+      if(val.test(passValue)) {
+        tempValidated[key] = true;
+      } else {
+        tempValidated[key] = false;
+      }
+    })
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    setValidated(tempValidated);
+  }, [passValue])
+```
