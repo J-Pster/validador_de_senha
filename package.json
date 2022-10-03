@@ -1,5 +1,6 @@
 {
   "name": "validador_de_senha",
+  "homepage": "https://j-pster.github.io/validador_de_senha/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
