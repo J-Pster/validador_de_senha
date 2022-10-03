@@ -23,27 +23,21 @@ const App = () => {
   })
 
   useEffect(() => {
-    console.log('==========')
     const tempValidated = validated;
 
     Object.entries(validations).map((obj) => {
       const key = obj[0]
       const val = obj[1]
 
-      console.log(`Validando ${passValue} na key ${key}`)
-
       if(val.test(passValue)) {
-        console.log(`${passValue} passou em ${key}!`)
         tempValidated[key] = true;
         console.log(validated)
       } else {
-        console.log(`${passValue} não passou em ${key}!`)
         tempValidated[key] = false;
       }
     })
 
     setValidated(tempValidated);
-    console.log(validated);
   }, [passValue])
   
 
