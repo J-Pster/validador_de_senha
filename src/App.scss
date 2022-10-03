@@ -1,0 +1,100 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: #8d99ae;
+
+  height: 100vh;
+}
+
+.Login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: #edf2f4;
+  padding: 30px;
+  border-radius: 20px;
+  width: 420px;
+
+  h3 {
+    font-size: 2rem;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  @media screen and (max-width: 550px) {
+    width: 75%;
+  }
+}
+
+.Login__inputs {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  input {
+    margin: 5px 5px;
+    padding: 20px;
+    outline: 0;
+    border: 0;
+    border-radius: 10px;
+
+    &:hover, &:focus {
+      outline: 1px solid #8d99ae;
+    }
+  }
+}
+
+.Password {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  input {
+    flex: 1;
+  }
+
+  .icon {
+    width: 50px;
+    height: 25px;
+
+    cursor: pointer;
+  }
+}
+
+.Inputs__checks {
+  list-style: none;
+  padding: 10px 10px;
+  margin: 0;
+}
+
+.true {
+  color: green;
+}
+
+.false {
+  color: red;
+}
+
+.Inputs__button {
+  margin-top: 10px;
+  padding: 20px 5px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+
+  font-weight: 600;
+
+  background: #fff;
+
+  &:hover {
+    color: #fff;
+    background: #ef233c;
+    cursor: pointer;
+  }
+}
