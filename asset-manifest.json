@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/validador_de_senha/static/css/main.8c4dc31b.css",
+    "main.js": "/validador_de_senha/static/js/main.9bb068c7.js",
+    "static/js/787.8a20b9d8.chunk.js": "/validador_de_senha/static/js/787.8a20b9d8.chunk.js",
+    "index.html": "/validador_de_senha/index.html",
+    "main.8c4dc31b.css.map": "/validador_de_senha/static/css/main.8c4dc31b.css.map",
+    "main.9bb068c7.js.map": "/validador_de_senha/static/js/main.9bb068c7.js.map",
+    "787.8a20b9d8.chunk.js.map": "/validador_de_senha/static/js/787.8a20b9d8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8c4dc31b.css",
+    "static/js/main.9bb068c7.js"
+  ]
+}
